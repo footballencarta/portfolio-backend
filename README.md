@@ -11,3 +11,5 @@ Technical choices:
 * **PHPUnit**: Unit testing, as that's pretty important.
 * **PHPCS**: Code sniffer to make sure the code adheres to the [PSR-12 standard](https://www.php-fig.org/psr/psr-12/)
 * **PHPStan**: Static Analysis to make help spot those pesky bugs earlier.
+* **[iamlive](https://github.com/iann0036/iamlive)**: To record minimum IAM permissions required for deployment.
+* **Terraform**: To create the role and deployment bucket ahead of time to allow the Lambda deployments to follow the Principle of least privilege

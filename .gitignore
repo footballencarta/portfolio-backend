@@ -3,6 +3,9 @@
 Homestead.json
 Homestead.yaml
 .env
+.serverless
 .phpunit.result.cache
 cghooks.lock
 clover.xml
+/terraform/.terraform
+/terraform/.terraform.lock.hcl

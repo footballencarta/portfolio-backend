@@ -1,9 +1,21 @@
 service: portfolio-backend
 
+variablesResolutionMode: null
+configValidationMode: error
+
+disabledDeprecations:
+    - NEW_VARIABLES_RESOLVER # Disabled because of bref
+
 provider:
     name: aws
     region: eu-west-2
     runtime: provided.al2
+    lambdaHashingVersion: 20201221
+    iam:
+        deploymentRole: ${ssm(eu-west-2):portfolio-backend-cfnRole}
+        role: ${ssm(eu-west-2):portfolio-backend-lambdaRole}
+    deploymentBucket:
+        name: ${ssm(eu-west-2):serverless-deploy-bucket}
 
 plugins:
     - ./vendor/bref/bref
@@ -20,6 +32,7 @@ functions:
 
 # Exclude files from deployment
 package:
-    exclude:
-        - 'node_modules/**'
-        - 'tests/**'
+    patterns:
+        - '!node_modules/**'
+        - '!tests/**'
+        - '!terraform/**'
