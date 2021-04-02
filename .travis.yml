@@ -6,4 +6,6 @@ install:
   - composer install
 
 script:
-  - vendor/bin/phpunit
+  - composer cs-check
+  - composer analyse
+  - composer test
