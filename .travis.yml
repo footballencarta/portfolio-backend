@@ -3,9 +3,10 @@ php:
   - 7.4
 
 install:
+  - pecl install pcov
   - composer install
 
 script:
-  - composer cs-check
+  - composer cs
   - composer analyse
-  - composer test
+  - composer coverage
