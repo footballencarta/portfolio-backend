@@ -41,7 +41,7 @@
         "test": "vendor/bin/phpunit",
         "coverage": [
             "@test",
-            "coverage-check build/logs/clover.xml 95 --only-percentage"
+            "coverage-check clover.xml 95 --only-percentage"
         ],
         "post-install-cmd": "cghooks add --ignore-lock",
         "post-update-cmd": "cghooks update"

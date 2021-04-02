@@ -10,3 +10,6 @@ script:
   - composer cs
   - composer analyse
   - composer coverage
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
