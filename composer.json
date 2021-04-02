@@ -1,8 +1,7 @@
 {
-    "name": "laravel/lumen",
-    "description": "The Laravel Lumen Framework.",
-    "keywords": ["framework", "laravel", "lumen"],
-    "license": "MIT",
+    "name": "footballencarta/portfolio-backend",
+    "description": "Backend for my portfolio website.",
+    "license": "GPL-3.0-or-later",
     "type": "project",
     "require": {
         "php": "^7.3|^8.0",
