@@ -45,7 +45,9 @@
         "cs": [
             "@cs-check",
             "@cs-fix"
-        ]
+        ],
+        "post-install-cmd": "cghooks add --ignore-lock",
+        "post-update-cmd": "cghooks update"
     },
     "extra": {
         "hooks": {
@@ -54,11 +56,11 @@
             },
             "pre-commit": [
                 "echo committing as $(git config user.name)",
-                "@analyse",
-                "@cs"
+                "composer analyse",
+                "composer cs"
             ],
             "pre-push": [
-                "@test"
+                "composer test"
             ]
         }
     }
