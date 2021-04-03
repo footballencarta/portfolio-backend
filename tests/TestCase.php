@@ -4,6 +4,8 @@ namespace Tests;
 
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Testing\TestCase as BaseTestCase;
+use Monolog\Handler\TestHandler;
+use Monolog\Logger;
 
 /**
  * Class TestCase.
@@ -17,6 +19,25 @@ abstract class TestCase extends BaseTestCase
      */
     public function createApplication(): Application
     {
-        return require __DIR__.'/../bootstrap/app.php';
+        return require __DIR__ . '/../bootstrap/app.php';
+    }
+
+    /**
+     * Mocks out Monolog so we can test log output
+     *
+     * @return TestHandler
+     */
+    protected function getLogMock(): TestHandler
+    {
+        $testLogHandler = new TestHandler();
+
+        /** @var Logger $monolog */
+        $monolog = app('log');
+
+        $monolog->setHandlers([
+            $testLogHandler
+        ]);
+
+        return $testLogHandler;
     }
 }

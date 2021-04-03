@@ -5,8 +5,11 @@
     "type": "project",
     "require": {
         "php": "^7.3|^8.0",
+        "ext-json": "*",
+        "aws/aws-sdk-php-laravel": "~3.0",
         "bref/bref": "^1.2",
-        "laravel/lumen-framework": "^8.0"
+        "laravel/lumen-framework": "^8.0",
+        "ramsey/uuid": "^4.1"
     },
     "require-dev": {
         "brainmaestro/composer-git-hooks": "^2.8",
