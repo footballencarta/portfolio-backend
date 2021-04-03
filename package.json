@@ -8,11 +8,11 @@
     "type": "git",
     "url": "git+https://github.com/footballencarta/portfolio-backend.git"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "bugs": {
     "url": "https://github.com/footballencarta/portfolio-backend/issues"
   },
-  "homepage": "https://github.com/footballencarta/portfolio-backend#readme"
+  "homepage": "https://github.com/footballencarta/portfolio-backend#readme",
+  "dependencies": {
+    "serverless": "^2.33.1"
+  }
 }

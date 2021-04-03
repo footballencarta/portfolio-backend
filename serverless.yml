@@ -20,6 +20,14 @@ provider:
 plugins:
     - ./vendor/bref/bref
 
+# Exclude files from deployment
+package:
+  patterns:
+    - '!node_modules/**'
+    - '!tests/**'
+    - '!terraform/**'
+
+
 functions:
     api:
         handler: public/index.php
@@ -30,9 +38,3 @@ functions:
         events:
             -   httpApi: '*'
 
-# Exclude files from deployment
-package:
-    patterns:
-        - '!node_modules/**'
-        - '!tests/**'
-        - '!terraform/**'
