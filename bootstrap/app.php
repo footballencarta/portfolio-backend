@@ -103,29 +103,6 @@ $app->register(Aws\Laravel\AwsServiceProvider::class);
 |
 */
 
-if (is_null(config('app.key', null))) {
-    // We don't have an APP_KEY set, so download it from SSM, and cache it
-    $cache = app('cache');
-
-    $appKey = $cache->rememberForever('app_key', function () {
-        // Download APP_KEY, and set as env
-
-        /** @var SsmClient $ssm */
-        $ssm = app('aws')->createClient('ssm');
-
-        $keyValue = $ssm->getParameter([
-            'Name' => 'portfolio-backend-app-key',
-            'WithDecryption' => true
-        ]);
-
-        $value = $keyValue->get('Parameter')['Value'];
-
-        return 'base64:' . $value;
-    });
-
-    config(['app.key' => $appKey]);
-}
-
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {

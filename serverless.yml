@@ -33,7 +33,7 @@ functions:
     description: ''
     timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
     environment:
-      CACHE_DRIVER: tmp
+      APP_KEY: ${ssm(eu-west-2):portfolio-backend-app-key~true}
       LOG_CHANNEL: errorlog
       DYNAMODB_EMAIL_TABLE_NAME: portfolio-backend-emails
     layers:
