@@ -27,14 +27,28 @@ package:
     - '!tests/**'
     - '!terraform/**'
 
-
 functions:
-    api:
-        handler: public/index.php
-        description: ''
-        timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
-        layers:
-            - ${bref:layer.php-74-fpm}
-        events:
-            -   httpApi: '*'
+  api:
+    handler: public/index.php
+    description: ''
+    timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
+    environment:
+      DYNAMODB_EMAIL_TABLE_NAME: portfolio-backend-emails
+    layers:
+      - ${bref:layer.php-74-fpm}
+    events:
+      -   httpApi: '*'
 
+resources:
+  Resources:
+    usersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: portfolio-backend-emails
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST

@@ -9,7 +9,7 @@ resource "aws_iam_role" "deployment_role" {
                 Action = "sts:AssumeRole"
                 Effect = "Allow"
                 Principal = {
-                    AWS = "arn:aws:iam::<accountId>:root"
+                    AWS = "arn:aws:iam::845057874985:root"
                 }
             }
         ]
@@ -68,7 +68,7 @@ resource "aws_iam_role" "deployment_role" {
                         "cloudformation:UpdateStack",
                         "cloudformation:DeleteStack"
                     ]
-                    Resource = "arn:aws:cloudformation:*:*:stack/portfolio-backend*/*"
+                    Resource = "arn:aws:cloudformation:eu-west-2:*:stack/portfolio-backend*/*"
                 },
                 {
                     Effect = "Allow"
@@ -126,7 +126,7 @@ resource "aws_iam_role" "cloudformation_role" {
                         "cloudformation:CreateStack",
                         "cloudformation:UpdateStack"
                     ]
-                    Resource = "arn:aws:cloudformation:*:*:stack/portfolio-backend*/*"
+                    Resource = "arn:aws:cloudformation:eu-west-2:*:stack/portfolio-backend*/*"
                 },
                 {
                     Effect = "Allow"
@@ -165,8 +165,8 @@ resource "aws_iam_role" "cloudformation_role" {
                         "apigateway:DELETE"
                     ]
                     Resource = [
-                        "arn:aws:apigateway:*::/apis",
-                        "arn:aws:apigateway:*::/apis/*"
+                        "arn:aws:apigateway:eu-west-2::/apis",
+                        "arn:aws:apigateway:eu-west-2::/apis/*"
                     ]
                 },
                 {
@@ -174,7 +174,7 @@ resource "aws_iam_role" "cloudformation_role" {
                     Action = [
                         "logs:DescribeLogGroups"
                     ]
-                    Resource = "arn:aws:logs:*:*:log-group::log-stream:*"
+                    Resource = "arn:aws:logs:eu-west-2:*:log-group::log-stream:*"
                 },
                 {
                     Effect = "Allow"
@@ -186,7 +186,7 @@ resource "aws_iam_role" "cloudformation_role" {
                         "logs:DescribeLogStreams",
                         "logs:FilterLogEvents"
                     ]
-                    Resource = "arn:aws:logs:*:*:log-group:/aws/lambda/portfolio-backend*:log-stream:*"
+                    Resource = "arn:aws:logs:eu-west-2:*:log-group:/aws/lambda/portfolio-backend*:log-stream:*"
                 },
                 {
                     Effect = "Allow"
@@ -197,7 +197,7 @@ resource "aws_iam_role" "cloudformation_role" {
                         "events:RemoveTargets",
                         "events:DeleteRule"
                     ]
-                    Resource = "arn:aws:events:*:*:rule/portfolio-backend*"
+                    Resource = "arn:aws:events:eu-west-2:*:rule/portfolio-backend*"
                 },
                 {
                     Effect = "Allow"
@@ -220,7 +220,7 @@ resource "aws_iam_role" "cloudformation_role" {
                         "lambda:TagResource",
                         "lambda:UntagResource"
                     ]
-                    Resource = "arn:aws:lambda:*:*:function:portfolio-backend*"
+                    Resource = "arn:aws:lambda:eu-west-2:*:function:portfolio-backend*"
                 },
                 {
                     Effect = "Allow"
@@ -228,6 +228,13 @@ resource "aws_iam_role" "cloudformation_role" {
                         "lambda:GetLayerVersion"
                     ]
                     Resource = "*"
+                },
+                {
+                    Effect = "Allow"
+                    Action = [
+                        "dynamodb:*"
+                    ]
+                    Resource = "arn:aws:dynamodb:eu-west-2:*:table/portfolio-backend-*"
                 }
             ]
         })
@@ -263,14 +270,21 @@ resource "aws_iam_role" "lambda_role" {
                         "logs:CreateLogStream",
                         "logs:CreateLogGroup"
                     ]
-                    Resource = "arn:aws:logs:*:*:log-group:/aws/lambda/portfolio-backend-dev*:*"
+                    Resource = "arn:aws:logs:eu-west-2:*:log-group:/aws/lambda/portfolio-backend-dev*:*"
                 },
                 {
                     Effect = "Allow"
                     Action = [
                         "logs:PutLogEvents"
                     ]
-                    Resource = "arn:aws:logs:*:*:log-group:/aws/lambda/portfolio-backend-dev*:*:*"
+                    Resource = "arn:aws:logs:eu-west-2:*:log-group:/aws/lambda/portfolio-backend-dev*:*:*"
+                },
+                {
+                    Effect = "Allow"
+                    Action = [
+                        "dynamodb:PutItem"
+                    ]
+                    Resource = "arn:aws:dynamodb:eu-west-2:*:table/portfolio-backend-*"
                 }
             ]
         })
