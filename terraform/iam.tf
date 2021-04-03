@@ -285,13 +285,6 @@ resource "aws_iam_role" "lambda_role" {
                         "dynamodb:PutItem"
                     ]
                     Resource = "arn:aws:dynamodb:eu-west-2:*:table/portfolio-backend-*"
-                },
-                {
-                    Effect = "Allow"
-                    Action = [
-                        "ssm:GetParameter"
-                    ]
-                    Resource = "arn:aws:ssm:eu-west-2:*:parameter/portfolio-backend-*"
                 }
             ]
         })
