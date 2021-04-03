@@ -3,12 +3,14 @@
 namespace Tests;
 
 /**
- * Index Test
+ * Class IndexTest
+ *
+ * @package Tests
  */
 class IndexTest extends TestCase
 {
     /**
-     * @return void
+     *
      */
     public function testIndex(): void
     {
@@ -16,7 +18,7 @@ class IndexTest extends TestCase
             ->get('/')
             ->seeStatusCode(200)
             ->seeJsonEquals([
-                'response' => true
+                'response' => true,
             ]);
     }
 

@@ -8,13 +8,14 @@ before_install:
 
 install:
   - pecl install pcov
-  - composer install
+  - composer install --no-scripts
 
 script:
   - composer cs
   - composer analyse
   - composer coverage
-  - composer install --no-dev
+  - composer install --no-dev --no-scripts
+  - npx serverless deploy
 
 after_success:
     - bash <(curl -s https://codecov.io/bash)

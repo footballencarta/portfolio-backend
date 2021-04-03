@@ -8,19 +8,24 @@ use Illuminate\Http\JsonResponse;
 use Laravel\Lumen\Routing\Controller;
 
 /**
- * IndexController
+ * Class IndexController.
  *
  * @package App\Http\Controllers
  */
 class IndexController extends Controller
 {
     /**
-     * IndexController constructor
+     * IndexController constructor.
      */
     public function __construct()
     {
     }
 
+    /**
+     * Returns the index response
+     *
+     * @return JsonResponse
+     */
     public function index(): JsonResponse
     {
         return response()->json([
