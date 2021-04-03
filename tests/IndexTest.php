@@ -3,15 +3,10 @@
 namespace Tests;
 
 /**
- * Class IndexTest
- *
- * @package Tests
+ * Class IndexTest.
  */
 class IndexTest extends TestCase
 {
-    /**
-     *
-     */
     public function testIndex(): void
     {
         $this
