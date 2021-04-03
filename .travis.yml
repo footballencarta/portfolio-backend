@@ -10,12 +10,22 @@ install:
   - pecl install pcov
   - composer install --no-scripts
 
-script:
-  - composer cs
-  - composer analyse
-  - composer coverage
-  - composer install --no-dev --no-scripts
-  - npx serverless deploy
+jobs:
+  include:
+    - stage: test
+      script:
+        - composer cs
+        - composer analyse
+        - composer coverage
+    - stage: deploy
+      script:
+        - composer install --no-dev --no-scripts
+        - npx serverless deploy
+
+stages:
+  - test
+  - name: deploy
+    if: (branch = main) AND (NOT (type IN (push, pull_request)))
 
 after_success:
     - bash <(curl -s https://codecov.io/bash)
