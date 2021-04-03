@@ -6,14 +6,12 @@ before_install:
   - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
   - nvm install --lts
 
-install:
-  - pecl install pcov
-  - composer install --no-scripts
-
 jobs:
   include:
     - stage: test
       script:
+        - pecl install pcov
+        - composer install --no-scripts
         - composer cs
         - composer analyse
         - composer coverage

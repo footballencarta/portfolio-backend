@@ -114,7 +114,7 @@ resource "aws_iam_role" "cloudformation_role" {
                     Action = [
                         "iam:PassRole",
                     ]
-                    "Resource" = aws_iam_role.lambda_role.arn
+                    Resource = aws_iam_role.lambda_role.arn
                 },
                 {
                     Effect = "Allow"
@@ -126,14 +126,14 @@ resource "aws_iam_role" "cloudformation_role" {
                         "cloudformation:CreateStack",
                         "cloudformation:UpdateStack"
                     ]
-                    "Resource" = "arn:aws:cloudformation:*:*:stack/portfolio-backend*/*"
+                    Resource = "arn:aws:cloudformation:*:*:stack/portfolio-backend*/*"
                 },
                 {
                     Effect = "Allow"
                     Action = [
                         "cloudformation:ValidateTemplate"
                     ]
-                    "Resource" = "*"
+                    Resource = "*"
                 },
                 {
                     Effect = "Allow"
@@ -239,7 +239,7 @@ resource "aws_iam_role" "lambda_role" {
 
     assume_role_policy = jsonencode({
         Version = "2012-10-17"
-    
+
         Statement = [
             {
                 Action = "sts:AssumeRole"
