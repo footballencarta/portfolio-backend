@@ -18,3 +18,14 @@ resource "aws_ssm_parameter" "serverlessDeployBucket" {
     type = "String"
     value = aws_s3_bucket.serverless_deploy_bucket.id
 }
+
+resource "aws_ssm_parameter" "appKey" {
+    name = "portfolio-backend-app-key"
+    description = "APP_KEY for portfolio backend"
+    type = "SecureString"
+    value = random_id.app_key.b64_std
+}
+
+resource "random_id" "app_key" {
+    byte_length = 32
+}

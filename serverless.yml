@@ -33,6 +33,8 @@ functions:
     description: ''
     timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
     environment:
+      CACHE_DRIVER: tmp
+      LOG_CHANNEL: errorlog
       DYNAMODB_EMAIL_TABLE_NAME: portfolio-backend-emails
     layers:
       - ${bref:layer.php-74-fpm}

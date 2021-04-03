@@ -1,5 +1,8 @@
 <?php
 
+use Aws\Ssm\SsmClient;
+use Illuminate\Support\Env;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
@@ -22,10 +25,6 @@ date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
 $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
-
-// $app->withFacades();
-
-// $app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -103,6 +102,29 @@ $app->register(Aws\Laravel\AwsServiceProvider::class);
 | can respond to, as well as the controllers that may handle them.
 |
 */
+
+if (is_null(config('app.key', null))) {
+    // We don't have an APP_KEY set, so download it from SSM, and cache it
+    $cache = app('cache');
+
+    $appKey = $cache->rememberForever('app_key', function () {
+        // Download APP_KEY, and set as env
+
+        /** @var SsmClient $ssm */
+        $ssm = app('aws')->createClient('ssm');
+
+        $keyValue = $ssm->getParameter([
+            'Name' => 'portfolio-backend-app-key',
+            'WithDecryption' => true
+        ]);
+
+        $value = $keyValue->get('Parameter')['Value'];
+
+        return 'base64:' . $value;
+    });
+
+    config(['app.key' => $appKey]);
+}
 
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
