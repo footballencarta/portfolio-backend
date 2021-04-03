@@ -9,8 +9,6 @@ use Laravel\Lumen\Routing\Controller;
 
 /**
  * Class IndexController.
- *
- * @package App\Http\Controllers
  */
 class IndexController extends Controller
 {
@@ -22,14 +20,14 @@ class IndexController extends Controller
     }
 
     /**
-     * Returns the index response
+     * Returns the index response.
      *
      * @return JsonResponse
      */
     public function index(): JsonResponse
     {
         return response()->json([
-            'response' => true
+            'response' => true,
         ]);
     }
 }
