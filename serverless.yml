@@ -40,10 +40,27 @@ functions:
       - ${bref:layer.php-74-fpm}
     events:
       -   httpApi: '*'
+  sendEmail:
+    handler: serverless-artisan
+    description: 'Sends Emails'
+    timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
+    environment:
+      APP_KEY: base64:${ssm:portfolio-backend-app-key~true}
+      LOG_CHANNEL: errorlog
+      DYNAMODB_EMAIL_TABLE_NAME: portfolio-backend-emails
+      CACHE_DRIVER: array
+      ARTISAN_COMMAND: send-email
+    layers:
+      - ${bref:layer.php-74}
+    events:
+      - stream:
+          type: dynamodb
+          arn:
+            Fn::GetAtt: [ emails, StreamArn ]
 
 resources:
   Resources:
-    usersTable:
+    emails:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: portfolio-backend-emails
@@ -54,3 +71,5 @@ resources:
           - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
+        StreamSpecification:
+          StreamViewType: NEW_IMAGE

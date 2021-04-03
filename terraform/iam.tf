@@ -218,14 +218,17 @@ resource "aws_iam_role" "cloudformation_role" {
                         "lambda:InvokeFunction",
                         "lambda:ListTags",
                         "lambda:TagResource",
-                        "lambda:UntagResource"
+                        "lambda:UntagResource",
+                        "lambda:DeleteEventSourceMapping"
                     ]
                     Resource = "arn:aws:lambda:eu-west-2:*:function:portfolio-backend*"
                 },
                 {
                     Effect = "Allow"
                     Action = [
-                        "lambda:GetLayerVersion"
+                        "lambda:GetLayerVersion",
+                        "lambda:CreateEventSourceMapping",
+                        "lambda:GetEventSourceMapping"
                     ]
                     Resource = "*"
                 },
@@ -234,7 +237,10 @@ resource "aws_iam_role" "cloudformation_role" {
                     Action = [
                         "dynamodb:*"
                     ]
-                    Resource = "arn:aws:dynamodb:eu-west-2:*:table/portfolio-backend-*"
+                    Resource = [
+                        "arn:aws:dynamodb:eu-west-2:*:table/portfolio-backend-*",
+                        "arn:aws:dynamodb:eu-west-2:*:table/portfolio-backend-*/stream/*"
+                    ]
                 }
             ]
         })
@@ -282,10 +288,29 @@ resource "aws_iam_role" "lambda_role" {
                 {
                     Effect = "Allow"
                     Action = [
-                        "dynamodb:PutItem"
+                        "dynamodb:PutItem",
+                        "dynamodb:UpdateItem"
                     ]
                     Resource = "arn:aws:dynamodb:eu-west-2:*:table/portfolio-backend-*"
-                }
+                },
+                {
+                    Effect = "Allow"
+                    Action = [
+                        "dynamodb:GetRecords",
+                        "dynamodb:GetShardIterator",
+                        "dynamodb:DescribeStream",
+                        "dynamodb:ListShards",
+                        "dynamodb:ListStreams"
+                    ]
+                    Resource = "arn:aws:dynamodb:eu-west-2:*:table/portfolio-backend-*/stream/*"
+                },
+                {
+                    Effect = "Allow"
+                    Action = [
+                        "ses:sendEmail"
+                    ]
+                    Resource = "*"
+                },
             ]
         })
     }

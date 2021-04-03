@@ -77,11 +77,19 @@ class EmailController extends Controller
      */
     protected function storeInDynamo(Request $request): void
     {
+        $from = strip_tags($request->input('from'));
+        $subject = strip_tags($request->input('subject'));
+        $message = nl2br(strip_tags($request->input('message')));
+
         /**
          * Encrypt the sent detail using the APP_KEY env as the email is classedas PII under GDPR, and the other
          * fields _may_ contain PII. Only the APP_KEY is able to decrypt this value.
          */
-        $content = encrypt(json_encode($request->all(), JSON_THROW_ON_ERROR));
+        $content = encrypt(json_encode([
+            'from' => $from,
+            'subject' => $subject,
+            'message' => $message
+        ], JSON_THROW_ON_ERROR));
 
         /**
          * We're using a time-based UUID here, so we don't have sequential ids
