@@ -26,4 +26,6 @@ stages:
     if: (branch = main) AND (NOT (type IN (pull_request)))
 
 after_success:
-    - bash <(curl -s https://codecov.io/bash)
+    - test $TRAVIS_BRANCH = "main" &&
+      test $TRAVIS_PULL_REQUEST = "false" &&
+      bash <(curl -s https://codecov.io/bash)
