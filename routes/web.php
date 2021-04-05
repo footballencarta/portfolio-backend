@@ -13,6 +13,4 @@
 |
 */
 
-$router->get('/', 'IndexController@index');
-
 $router->post('/email', 'EmailController@send');

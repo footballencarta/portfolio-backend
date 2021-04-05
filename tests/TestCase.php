@@ -2,8 +2,6 @@
 
 namespace Tests;
 
-use Aws\MockHandler;
-use Aws\Result;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Testing\TestCase as BaseTestCase;
 use Monolog\Handler\TestHandler;

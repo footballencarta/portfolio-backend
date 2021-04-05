@@ -57,7 +57,7 @@ class EmailController extends Controller
              * We catch any AWS Exceptions here to allow us to return an error and log what went wrong
              */
             app('log')->error('Error storing email to dynamo');
-            app('log')->error($e->getMessage());
+            app('log')->error(strval($e->getAwsErrorMessage()));
 
             return $this->errorSendingEmail();
         }
@@ -77,6 +77,9 @@ class EmailController extends Controller
      */
     protected function storeInDynamo(Request $request): void
     {
+        /**
+         * We're stripping tags here to sanitise the data before we put it into the database.
+         */
         $from = strip_tags($request->input('from'));
         $subject = strip_tags($request->input('subject'));
         $message = nl2br(strip_tags($request->input('message')));

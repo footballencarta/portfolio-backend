@@ -24,5 +24,7 @@
     <env name="CACHE_DRIVER" value="array"/>
     <env name="QUEUE_CONNECTION" value="sync"/>
     <env name="DYNAMODB_EMAIL_TABLE_NAME" value="Test" />
+    <env name="DESTINATION_ADDRESS" value="receiver@example.com" />
+    <env name="SENDER_ADDRESS" value="sender@example.com" />
   </php>
 </phpunit>
