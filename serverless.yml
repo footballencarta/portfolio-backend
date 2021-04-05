@@ -16,6 +16,10 @@ provider:
         role: ${ssm(eu-west-2):portfolio-backend-lambdaRole}
     deploymentBucket:
         name: ${ssm(eu-west-2):serverless-deploy-bucket}
+    environment:
+      APP_KEY: base64:${ssm:portfolio-backend-app-key~true}
+      LOG_CHANNEL: errorlog
+      DYNAMODB_EMAIL_TABLE_NAME: portfolio-backend-emails
 
 plugins:
     - ./vendor/bref/bref
@@ -32,10 +36,6 @@ functions:
     handler: public/index.php
     description: 'API for portfolio backend'
     timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
-    environment:
-      APP_KEY: base64:${ssm:portfolio-backend-app-key~true}
-      LOG_CHANNEL: errorlog
-      DYNAMODB_EMAIL_TABLE_NAME: portfolio-backend-emails
     layers:
       - ${bref:layer.php-74-fpm}
     events:
@@ -43,13 +43,12 @@ functions:
   sendEmail:
     handler: serverless-artisan
     description: 'Sends Emails'
-    timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
+    timeout: 30
     environment:
-      APP_KEY: base64:${ssm:portfolio-backend-app-key~true}
-      LOG_CHANNEL: errorlog
-      DYNAMODB_EMAIL_TABLE_NAME: portfolio-backend-emails
       CACHE_DRIVER: array
       ARTISAN_COMMAND: send-email
+      DESTINATION_ADDRESS: ${ssm:portfolio-backend-destination-address~true}
+      SENDER_ADDRESS: ${ssm:portfolio-backend-sender-address~true}
     layers:
       - ${bref:layer.php-74}
     events:

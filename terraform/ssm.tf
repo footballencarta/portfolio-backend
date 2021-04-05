@@ -1,3 +1,11 @@
+variable "destination_address" {
+    type = string
+}
+
+variable "source_address" {
+    type = string
+}
+
 resource "aws_ssm_parameter" "cfnRole" {
     name = "portfolio-backend-cfnRole"
     description = "Cloudformation role for portfolio backend"
@@ -24,6 +32,20 @@ resource "aws_ssm_parameter" "appKey" {
     description = "APP_KEY for portfolio backend"
     type = "SecureString"
     value = random_id.app_key.b64_std
+}
+
+resource "aws_ssm_parameter" "destinationAddress" {
+    name = "portfolio-backend-destination-address"
+    description = "DESTINATION_ADDRESS for portfolio backend"
+    type = "SecureString"
+    value = var.destination_address
+}
+
+resource "aws_ssm_parameter" "senderAddress" {
+    name = "portfolio-backend-sender-address"
+    description = "SENDER_ADDRESS for portfolio backend"
+    type = "SecureString"
+    value = var.source_address
 }
 
 resource "random_id" "app_key" {

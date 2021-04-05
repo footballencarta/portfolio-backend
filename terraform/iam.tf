@@ -148,14 +148,6 @@ resource "aws_iam_role" "cloudformation_role" {
                 {
                     Effect = "Allow"
                     Action = [
-                        "s3:ListAllMyBuckets",
-                        "s3:CreateBucket"
-                    ]
-                    Resource = "*"
-                },
-                {
-                    Effect = "Allow"
-                    Action = [
                         "apigateway:GET",
                         "apigateway:HEAD",
                         "apigateway:OPTIONS",
@@ -187,17 +179,6 @@ resource "aws_iam_role" "cloudformation_role" {
                         "logs:FilterLogEvents"
                     ]
                     Resource = "arn:aws:logs:eu-west-2:*:log-group:/aws/lambda/portfolio-backend*:log-stream:*"
-                },
-                {
-                    Effect = "Allow"
-                    Action = [
-                        "events:DescribeRule",
-                        "events:PutRule",
-                        "events:PutTargets",
-                        "events:RemoveTargets",
-                        "events:DeleteRule"
-                    ]
-                    Resource = "arn:aws:events:eu-west-2:*:rule/portfolio-backend*"
                 },
                 {
                     Effect = "Allow"
