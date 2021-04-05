@@ -48,6 +48,13 @@ resource "aws_ssm_parameter" "senderAddress" {
     value = var.source_address
 }
 
+resource "aws_ssm_parameter" "httpGatewayId" {
+    name = "portfolio-backend-http-gateway-id"
+    description = "API Gateway ID"
+    type = "String"
+    value = aws_apigatewayv2_api.http_gateway.id
+}
+
 resource "random_id" "app_key" {
     byte_length = 32
 }

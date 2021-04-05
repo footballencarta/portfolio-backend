@@ -9,7 +9,9 @@ Backend for my portfolio site on damonwilliams.co.uk
 * **Serverless Framework**: Serverless Framework allows the API to run on AWS Lambda. This means it's now (almost) 
   infinitely scalable, with consistent response times.
 * **NodeJS**: Serverless runs on NodeJS, so is a required dependency
-* **Bref.sh**: PHP Layer for AWS Lambda allowing PHP to be ran natively.
+* **DynamoDB**: It's scalable for what I need (as in if it's not in use, it costs nothing), plus I can run triggers on
+  the stream for when new data appears
+* **Bref.sh**: PHP Layer for AWS Lambda allowing PHP to be run natively.
 * **PHPUnit**: Unit testing, as that's pretty important.
 * **PHPCS**: Code sniffer to make sure the code adheres to the [PSR-12 standard](https://www.php-fig.org/psr/psr-12/)
 * **PHPStan**: Static Analysis to make help spot those pesky bugs earlier.

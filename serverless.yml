@@ -18,8 +18,11 @@ provider:
         name: ${ssm(eu-west-2):serverless-deploy-bucket}
     environment:
       APP_KEY: base64:${ssm:portfolio-backend-app-key~true}
+      CACHE_DRIVER: array
       LOG_CHANNEL: errorlog
       DYNAMODB_EMAIL_TABLE_NAME: portfolio-backend-emails
+    httpApi:
+      id: ${ssm:portfolio-backend-http-gateway-id}
 
 plugins:
     - ./vendor/bref/bref
@@ -39,13 +42,12 @@ functions:
     layers:
       - ${bref:layer.php-74-fpm}
     events:
-      -   httpApi: '*'
+      - httpApi: 'POST /email'
   sendEmail:
     handler: serverless-artisan
     description: 'Sends Emails'
     timeout: 30
     environment:
-      CACHE_DRIVER: array
       ARTISAN_COMMAND: send-email
       DESTINATION_ADDRESS: ${ssm:portfolio-backend-destination-address~true}
       SENDER_ADDRESS: ${ssm:portfolio-backend-sender-address~true}
