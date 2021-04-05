@@ -12,3 +12,4 @@ clover.xml
 /vendor
 /terraform/.terraform
 /terraform/.terraform.lock.hcl
+/terraform/vars.tfvars

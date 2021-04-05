@@ -1,0 +1,14 @@
+<?php
+
+require __DIR__.'/bootstrap/app.php';
+
+use Illuminate\Contracts\Console\Kernel;
+
+return function($event) {
+    /** @var Kernel $kernel */
+    $kernel = app(Kernel::class);
+
+    $kernel->call(env('ARTISAN_COMMAND'), [
+        'event' => $event
+    ]);
+};

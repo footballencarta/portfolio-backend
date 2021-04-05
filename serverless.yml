@@ -16,6 +16,13 @@ provider:
         role: ${ssm(eu-west-2):portfolio-backend-lambdaRole}
     deploymentBucket:
         name: ${ssm(eu-west-2):serverless-deploy-bucket}
+    environment:
+      APP_KEY: base64:${ssm:portfolio-backend-app-key~true}
+      CACHE_DRIVER: array
+      LOG_CHANNEL: errorlog
+      DYNAMODB_EMAIL_TABLE_NAME: portfolio-backend-emails
+    httpApi:
+      id: ${ssm:portfolio-backend-http-gateway-id}
 
 plugins:
     - ./vendor/bref/bref
@@ -32,18 +39,29 @@ functions:
     handler: public/index.php
     description: 'API for portfolio backend'
     timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
-    environment:
-      APP_KEY: base64:${ssm:portfolio-backend-app-key~true}
-      LOG_CHANNEL: errorlog
-      DYNAMODB_EMAIL_TABLE_NAME: portfolio-backend-emails
     layers:
       - ${bref:layer.php-74-fpm}
     events:
-      -   httpApi: '*'
+      - httpApi: 'POST /email'
+  sendEmail:
+    handler: serverless-artisan
+    description: 'Sends Emails'
+    timeout: 30
+    environment:
+      ARTISAN_COMMAND: send-email
+      DESTINATION_ADDRESS: ${ssm:portfolio-backend-destination-address~true}
+      SENDER_ADDRESS: ${ssm:portfolio-backend-sender-address~true}
+    layers:
+      - ${bref:layer.php-74}
+    events:
+      - stream:
+          type: dynamodb
+          arn:
+            Fn::GetAtt: [ emails, StreamArn ]
 
 resources:
   Resources:
-    usersTable:
+    emails:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: portfolio-backend-emails
@@ -54,3 +72,5 @@ resources:
           - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
+        StreamSpecification:
+          StreamViewType: NEW_IMAGE

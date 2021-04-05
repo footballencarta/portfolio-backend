@@ -80,7 +80,7 @@ class EmailTest extends TestCase
     {
         $mock = new MockHandler();
         $mock->append(function (CommandInterface $cmd, RequestInterface $req) {
-            return new AwsException('Mock exception', $cmd);
+            return new AwsException('Mock exception', $cmd, ['message' => 'DynamoDB Error.']);
         });
 
         config([
@@ -101,6 +101,6 @@ class EmailTest extends TestCase
             ]);
 
         $this->assertTrue($testLogHandler->hasError('Error storing email to dynamo'));
-        $this->assertTrue($testLogHandler->hasError('Mock exception'));
+        $this->assertTrue($testLogHandler->hasError('DynamoDB Error.'));
     }
 }
