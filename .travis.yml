@@ -1,6 +1,8 @@
 language: php
 php:
   - 7.4
+dist: xenial
+os: linux
 
 before_install:
   - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
