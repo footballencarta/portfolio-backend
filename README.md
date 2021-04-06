@@ -3,7 +3,7 @@
 
 Backend for my portfolio site on damonwilliams.co.uk
 
-###Technical choices:
+### Technical choices:
 
 * **PHP**: I've been using PHP since 2006, so I know it pretty well.
 * **Serverless Framework**: Serverless Framework allows the API to run on AWS Lambda. This means it's now (almost) 
@@ -19,7 +19,7 @@ Backend for my portfolio site on damonwilliams.co.uk
 * **Terraform**: To create the role and deployment bucket ahead of time to allow the Lambda deployments to follow the 
   Principle of least privilege
 
-###Limitations:
+### Limitations:
 
 * Unfortunately, I couldn't see a way for DynamoDB / SES to handle transactions. This means if the email sends, but 
   Dynamo fails to update the record, we may receive duplicate emails.
