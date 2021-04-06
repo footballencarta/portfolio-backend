@@ -25,6 +25,7 @@ resource "aws_apigatewayv2_api" "http_gateway" {
     cors_configuration {
         allow_origins = var.allow_origins
         allow_methods = ["POST"]
+        allow_headers = ["*"]
     }
 }
 

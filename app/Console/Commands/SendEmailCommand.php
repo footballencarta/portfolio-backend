@@ -92,7 +92,8 @@ class SendEmailCommand extends Command
     protected function buildMessage(array $emailDetails): array
     {
         $htmlMessage = <<<MSG
-<p>From: {$emailDetails['from']}</p>
+<p>From: {$emailDetails['name']}
+<br />Email: {$emailDetails['from']}</p>
 
 <p><b>Message:</b>
 <br />{$emailDetails['message']}</p>
@@ -101,8 +102,6 @@ MSG;
         $plainTextMessage = strip_tags($htmlMessage);
 
         app('log')->info('Generated email content.');
-        app('log')->info($htmlMessage);
-        app('log')->info($plainTextMessage);
 
         return [
             $htmlMessage,

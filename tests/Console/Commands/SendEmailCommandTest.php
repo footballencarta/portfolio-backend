@@ -31,18 +31,6 @@ class SendEmailCommandTest extends TestCase
 
         $this->assertTrue($testLogHandler->hasInfo('Found email 1234-abcd-5678-efgh.'));
         $this->assertTrue($testLogHandler->hasInfo('Generated email content.'));
-        $this->assertTrue($testLogHandler->hasInfo(<<<MSG
-<p>From: test@example.com</p>
-
-<p><b>Message:</b>
-<br />test</p>
-MSG));
-        $this->assertTrue($testLogHandler->hasInfo(<<<MSG
-From: test@example.com
-
-Message:
-test
-MSG));
         $this->assertTrue($testLogHandler->hasInfo('Email 1234-abcd-5678-efgh has been updated to Sent.'));
     }
 
@@ -69,6 +57,7 @@ MSG));
         $newRecord['dynamodb']['NewImage']['id']['S'] = 'new-id';
 
         $newRecord['dynamodb']['NewImage']['content']['S'] = encrypt(json_encode([
+            'name' => 'Test 2',
             'from' => 'test2@example.com',
             'subject' => 'Test2',
             'message' => 'Test 2'
@@ -82,34 +71,10 @@ MSG));
 
         $this->assertTrue($testLogHandler->hasInfo('Found email 1234-abcd-5678-efgh.'));
         $this->assertTrue($testLogHandler->hasInfo('Generated email content.'));
-        $this->assertTrue($testLogHandler->hasInfo(<<<MSG
-<p>From: test@example.com</p>
-
-<p><b>Message:</b>
-<br />test</p>
-MSG));
-        $this->assertTrue($testLogHandler->hasInfo(<<<MSG
-From: test@example.com
-
-Message:
-test
-MSG));
         $this->assertTrue($testLogHandler->hasInfo('Email 1234-abcd-5678-efgh has been updated to Sent.'));
 
         $this->assertTrue($testLogHandler->hasInfo('Found email new-id.'));
         $this->assertTrue($testLogHandler->hasInfo('Generated email content.'));
-        $this->assertTrue($testLogHandler->hasInfo(<<<MSG
-<p>From: test2@example.com</p>
-
-<p><b>Message:</b>
-<br />Test 2</p>
-MSG));
-        $this->assertTrue($testLogHandler->hasInfo(<<<MSG
-From: test2@example.com
-
-Message:
-Test 2
-MSG));
         $this->assertTrue($testLogHandler->hasInfo('Email new-id has been updated to Sent.'));
     }
 
@@ -176,18 +141,6 @@ MSG));
 
         $this->assertTrue($testLogHandler->hasInfo('Found email 1234-abcd-5678-efgh.'));
         $this->assertTrue($testLogHandler->hasInfo('Generated email content.'));
-        $this->assertTrue($testLogHandler->hasInfo(<<<MSG
-<p>From: test@example.com</p>
-
-<p><b>Message:</b>
-<br />test</p>
-MSG));
-        $this->assertTrue($testLogHandler->hasInfo(<<<MSG
-From: test@example.com
-
-Message:
-test
-MSG));
         $this->assertTrue($testLogHandler->hasError('AWS Error on sending email.'));
         $this->assertTrue($testLogHandler->hasError('Email Error.'));
         $this->assertTrue($testLogHandler->hasInfo('Email 1234-abcd-5678-efgh has been updated to Failed.'));
@@ -215,18 +168,6 @@ MSG));
 
         $this->assertTrue($testLogHandler->hasInfo('Found email 1234-abcd-5678-efgh.'));
         $this->assertTrue($testLogHandler->hasInfo('Generated email content.'));
-        $this->assertTrue($testLogHandler->hasInfo(<<<MSG
-<p>From: test@example.com</p>
-
-<p><b>Message:</b>
-<br />test</p>
-MSG));
-        $this->assertTrue($testLogHandler->hasInfo(<<<MSG
-From: test@example.com
-
-Message:
-test
-MSG));
         $this->assertTrue($testLogHandler->hasError('AWS Error on updating status.'));
         $this->assertTrue($testLogHandler->hasError('DynamoDB Error.'));
     }

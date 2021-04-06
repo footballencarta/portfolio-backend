@@ -6,6 +6,10 @@ variable "source_address" {
     type = string
 }
 
+variable "recaptcha_secret" {
+    type = string
+}
+
 resource "aws_ssm_parameter" "cfnRole" {
     name = "portfolio-backend-cfnRole"
     description = "Cloudformation role for portfolio backend"
@@ -46,6 +50,13 @@ resource "aws_ssm_parameter" "senderAddress" {
     description = "SENDER_ADDRESS for portfolio backend"
     type = "SecureString"
     value = var.source_address
+}
+
+resource "aws_ssm_parameter" "recaptchaSecret" {
+    name = "portfolio-backend-recaptcha-secret"
+    description = "RECAPTCHA_SECRET for portfolio backend"
+    type = "SecureString"
+    value = var.recaptcha_secret
 }
 
 resource "aws_ssm_parameter" "httpGatewayId" {
