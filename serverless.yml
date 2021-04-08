@@ -39,6 +39,9 @@ functions:
     handler: public/index.php
     description: 'API for portfolio backend'
     timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
+    environment:
+      RECAPTCHA_URL: https://www.google.com/recaptcha/api/siteverify
+      RECAPTCHA_SECRET: ${ssm:portfolio-backend-recaptcha-secret~true}
     layers:
       - ${bref:layer.php-74-fpm}
     events:

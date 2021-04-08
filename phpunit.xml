@@ -26,5 +26,6 @@
     <env name="DYNAMODB_EMAIL_TABLE_NAME" value="Test" />
     <env name="DESTINATION_ADDRESS" value="receiver@example.com" />
     <env name="SENDER_ADDRESS" value="sender@example.com" />
+    <env name="RECAPTCHA_URL" value="http://localhost" />
   </php>
 </phpunit>

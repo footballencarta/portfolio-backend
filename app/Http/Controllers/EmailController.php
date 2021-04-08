@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Rules\Recaptcha;
 use Aws\DynamoDb\DynamoDbClient;
 use Aws\Exception\AwsException;
+use GuzzleHttp\Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -21,6 +23,17 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class EmailController extends Controller
 {
+    private Client $client;
+
+    /**
+     * EmailController constructor.
+     *
+     * @param Client $client
+     */
+    public function __construct(Client $client)
+    {
+        $this->client = $client;
+    }
     /**
      * Sends an email to SQS to be sent.
      *
@@ -34,16 +47,24 @@ class EmailController extends Controller
     public function send(Request $request): JsonResponse
     {
         $this->validate($request, [
+            'name' => 'required|string',
             'from' => 'required|email',
             'subject' => 'required|string',
-            'message' => 'required|string'
+            'message' => 'required|string',
+            'recaptcha' => [
+                'required',
+                new Recaptcha($this->client)
+            ]
         ], [
+            'name.required' => 'Please enter your name.',
+            'name.string' => 'Please enter your name.', // Please enter a valid name wouldn't make much sense here...
             'from.required' => 'Please enter a from address.',
             'from.email' => 'Please enter a valid from address.',
             'subject.required' => 'Please enter a subject.',
             'subject.string' => 'Please enter a valid subject.',
             'message.required' => 'Please enter a message.',
             'message.string' => 'Please enter a valid message.',
+            'recaptcha.required' => 'Please complete the captcha.',
         ]);
 
         try {
@@ -80,6 +101,7 @@ class EmailController extends Controller
         /**
          * We're stripping tags here to sanitise the data before we put it into the database.
          */
+        $name = strip_tags($request->input('name'));
         $from = strip_tags($request->input('from'));
         $subject = strip_tags($request->input('subject'));
         $message = nl2br(strip_tags($request->input('message')));
@@ -89,6 +111,7 @@ class EmailController extends Controller
          * fields _may_ contain PII. Only the APP_KEY is able to decrypt this value.
          */
         $content = encrypt(json_encode([
+            'name' => $name,
             'from' => $from,
             'subject' => $subject,
             'message' => $message
